@@ -6,7 +6,7 @@ const { COLLECTIONS, PAYMENT_STATUS } = require("../config/firestore-schema");
 // Get credentials from environment (read at runtime, not module load time)
 const getCredentials = () => ({
   keyId: process.env.RAZORPAY_KEY_ID,
-  keySecret: process.env.RAZORPAY_KEY_SECRET
+  keySecret: process.env.RAZORPAY_KEY_SECRET,
 });
 
 /**
@@ -28,14 +28,21 @@ async function createOrder(amount, receiptId, notes = {}) {
 
   // Check if Razorpay credentials are configured
   if (!keyId || !keySecret) {
-    console.error("Razorpay credentials not configured. KEY_ID:", keyId ? "set" : "missing", "SECRET:", keySecret ? "set" : "missing");
+    console.error(
+      "Razorpay credentials not configured. KEY_ID:",
+      keyId ? "set" : "missing",
+      "SECRET:",
+      keySecret ? "set" : "missing"
+    );
     throw new Error("Payment gateway not configured");
   }
 
   try {
     const auth = Buffer.from(`${keyId}:${keySecret}`).toString("base64");
 
-    console.log(`Creating Razorpay order: amount=${amount}, receipt=${receiptId}`);
+    console.log(
+      `Creating Razorpay order: amount=${amount}, receipt=${receiptId}`
+    );
 
     const response = await axios.post(
       "https://api.razorpay.com/v1/orders",

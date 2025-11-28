@@ -65,7 +65,7 @@ function QueryProvider({ children }) {
         columnNumber: 10
     }, this);
 }
-_s(QueryProvider, "f/7BZILF/fNND3CteZQSTywI90c=");
+_s(QueryProvider, "PD+UB9ABGiWRE3jY1746zf8+tQI=");
 _c = QueryProvider;
 var _c;
 __turbopack_context__.k.register(_c, "QueryProvider");

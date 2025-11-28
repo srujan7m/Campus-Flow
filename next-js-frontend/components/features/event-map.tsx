@@ -1,12 +1,7 @@
 "use client"
 
-<<<<<<< Updated upstream
 import { useEffect, useRef, useState } from "react"
-=======
-import { useEffect, useRef } from "react"
-// Mapbox CSS is required for the map canvas and controls to render correctly
 import "mapbox-gl/dist/mapbox-gl.css"
->>>>>>> Stashed changes
 
 interface EventMapProps {
   lat: number
@@ -42,7 +37,7 @@ export function EventMap({
     longitude >= -180 && longitude <= 180 &&
     (latitude !== 0 || longitude !== 0)
 
-  const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || process.env.NEXT_PUBLIC_MAPBOX_TOKEN
+  const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
 
   useEffect(() => {
     if (!mapContainerRef.current || !isValidLocation) {
@@ -52,19 +47,12 @@ export function EventMap({
 
     const initMap = async () => {
       try {
-        // Dynamically import mapbox-gl and its CSS
+        // Dynamically import mapbox-gl
         const mapboxgl = (await import("mapbox-gl")).default
-<<<<<<< Updated upstream
-        await import("mapbox-gl/dist/mapbox-gl.css")
 
-        const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
         if (!token) {
           setMapError("Mapbox token is missing")
           setIsLoading(false)
-=======
-        if (!token) {
-          console.error("Mapbox token is missing. Set NEXT_PUBLIC_MAPBOX_TOKEN in your .env")
->>>>>>> Stashed changes
           return
         }
         mapboxgl.accessToken = token
@@ -124,7 +112,7 @@ export function EventMap({
         mapRef.current = null
       }
     }
-  }, [latitude, longitude, address, eventName, zoom, interactive, isValidLocation])
+  }, [latitude, longitude, address, eventName, zoom, interactive, isValidLocation, token])
 
   if (!isValidLocation) {
     return (
@@ -149,7 +137,7 @@ export function EventMap({
   }
 
   // If Mapbox token is missing, show a helpful placeholder instead of a blank map
-  if (isValidLocation && !process.env.NEXT_PUBLIC_MAPBOX_TOKEN) {
+  if (!token) {
     return (
       <div
         className={`flex flex-col items-center justify-center bg-muted rounded-lg p-4 ${className}`}
@@ -164,7 +152,6 @@ export function EventMap({
   }
 
   return (
-<<<<<<< Updated upstream
     <div className="relative" style={{ height }}>
       {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center bg-muted rounded-lg z-10">
@@ -177,12 +164,5 @@ export function EventMap({
         style={{ height, width: "100%" }}
       />
     </div>
-=======
-    <div
-      ref={mapContainerRef}
-      className={`w-full rounded-lg overflow-hidden ${className}`}
-      style={{ height }}
-    />
->>>>>>> Stashed changes
   )
 }

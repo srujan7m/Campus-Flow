@@ -1,46 +1,931 @@
-[00:00:01.402] Server  LOG      ✓ Ready in 935ms
-[00:01:47.128] Server  LOG      ○ Compiling /events/[code] ...
-[00:01:51.669] Server  ERROR    ⨯ ./OneDrive/Desktop/Collage Events/next-js-frontend/app/layout.tsx:2:12
+[00:00:03.209] Server  LOG      ✓ Ready in 2.1s
+[00:00:09.311] Server  LOG      ○ Compiling / ...
+[00:00:20.186] Server  ERROR    ⨯ ./components/features/event-map.tsx:127:6
 Parsing ecmascript source code failed
-  1 | description: "A modern event management platform for campus events with AI-powered support and seamless registration",
-> 2 |   generator: "v0.app",
-    |            ^
-  3 |     icons: {
-  4 |   icon: [
-  5 |     {
+  125 |       }
+  126 |     }
+> 127 |   }, [latitude, longitude, address, eventName, zoom, interactive, isValidLocation])
+      |      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  128 |
+  129 |   if (!isValidLocation) {
+  130 |     return (
 
-Expected ';', '}' or <eof>
+'const' declarations must be initialized
+
+Import traces:
+  Client Component Browser:
+    ./components/features/event-map.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/event-map.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
 
 
-[00:01:53.253] Browser ERROR   uncaughtError: Error: ./OneDrive/Desktop/Collage Events/next-js-frontend/app/layout.tsx:2:12
+
+./components/features/event-map.tsx:112:9
 Parsing ecmascript source code failed
-  1 | description: "A modern event management platform for campus events with AI-powered support and seamless registration",
-> 2 |   generator: "v0.app",
-    |            ^
-  3 |     icons: {
-  4 |   icon: [
-  5 |     {
+  110 |
+  111 |         mapRef.current = map
+> 112 |       } catch (error) {
+      |         ^^^^^
+  113 |         console.error("Error initializing map:", error)
+  114 |         setMapError("Failed to initialize map")
+  115 |         setIsLoading(false)
 
-Expected ';', '}' or <eof>
+Expected a semicolon
+
+Import traces:
+  Client Component Browser:
+    ./components/features/event-map.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/event-map.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
 
 
-[00:01:53.523] Browser ERROR   ./OneDrive/Desktop/Collage Events/next-js-frontend/app/layout.tsx:2:12
+
+./components/features/event-map.tsx:119:5
 Parsing ecmascript source code failed
-  1 | description: "A modern event management platform for campus events with AI-powered support and seamless registration",
-> 2 |   generator: "v0.app",
-    |            ^
-  3 |     icons: {
-  4 |   icon: [
-  5 |     {
+  117 |     }
+  118 |
+> 119 |     initMap()
+      |     ^
+  120 |
+  121 |     return () => {
+  122 |       if (mapRef.current) {
 
-Expected ';', '}' or <eof>
-[00:01:54.515] Browser ERROR   ./OneDrive/Desktop/Collage Events/next-js-frontend/app/layout.tsx:2:12
+Expected a semicolon
+
+Import traces:
+  Client Component Browser:
+    ./components/features/event-map.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/event-map.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
+
+
+
+./components/features/event-map.tsx:127:83
 Parsing ecmascript source code failed
-  1 | description: "A modern event management platform for campus events with AI-powered support and seamless registration",
-> 2 |   generator: "v0.app",
-    |            ^
-  3 |     icons: {
-  4 |   icon: [
-  5 |     {
+  125 |       }
+  126 |     }
+> 127 |   }, [latitude, longitude, address, eventName, zoom, interactive, isValidLocation])
+      |                                                                                   ^
+  128 |
+  129 |   if (!isValidLocation) {
+  130 |     return (
 
-Expected ';', '}' or <eof>
+Expected a semicolon
+
+Import traces:
+  Client Component Browser:
+    ./components/features/event-map.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/event-map.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
+
+
+
+./components/features/event-map.tsx:3:1
+Parsing ecmascript source code failed
+  1 | "use client"
+  2 |
+> 3 | <<<<<<< Updated upstream
+    | ^^^^^^^
+  4 | import { useEffect, useRef, useState } from "react"
+  5 | =======
+  6 | import { useEffect, useRef } from "react"
+
+Merge conflict marker encountered.
+
+Import traces:
+  Client Component Browser:
+    ./components/features/event-map.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/event-map.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
+
+
+
+./components/features/event-map.tsx:5:1
+Parsing ecmascript source code failed
+  3 | <<<<<<< Updated upstream
+  4 | import { useEffect, useRef, useState } from "react"
+> 5 | =======
+    | ^^^^^^^
+  6 | import { useEffect, useRef } from "react"
+  7 | // Mapbox CSS is required for the map canvas and controls to render correctly
+  8 | import "mapbox-gl/dist/mapbox-gl.css"
+
+Merge conflict marker encountered.
+
+Import traces:
+  Client Component Browser:
+    ./components/features/event-map.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/event-map.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
+
+
+
+./components/features/event-map.tsx:9:1
+Parsing ecmascript source code failed
+   7 | // Mapbox CSS is required for the map canvas and controls to render correctly
+   8 | import "mapbox-gl/dist/mapbox-gl.css"
+>  9 | >>>>>>> Stashed changes
+     | ^^^^^^^
+  10 |
+  11 | interface EventMapProps {
+  12 |   lat: number
+
+Merge conflict marker encountered.
+
+Import traces:
+  Client Component Browser:
+    ./components/features/event-map.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/event-map.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
+
+
+
+./components/features/event-map.tsx:57:1
+Parsing ecmascript source code failed
+  55 |         // Dynamically import mapbox-gl and its CSS
+  56 |         const mapboxgl = (await import("mapbox-gl")).default
+> 57 | <<<<<<< Updated upstream
+     | ^^^^^^^
+  58 |         await import("mapbox-gl/dist/mapbox-gl.css")
+  59 |
+  60 |         const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN
+
+Merge conflict marker encountered.
+
+Import traces:
+  Client Component Browser:
+    ./components/features/event-map.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/event-map.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
+
+
+
+./components/features/event-map.tsx:64:1
+Parsing ecmascript source code failed
+  62 |           setMapError("Mapbox token is missing")
+  63 |           setIsLoading(false)
+> 64 | =======
+     | ^^^^^^^
+  65 |         if (!token) {
+  66 |           console.error("Mapbox token is missing. Set NEXT_PUBLIC_MAPBOX_TOKEN in your .env")
+  67 | >>>>>>> Stashed changes
+
+Merge conflict marker encountered.
+
+Import traces:
+  Client Component Browser:
+    ./components/features/event-map.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/event-map.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
+
+
+
+./components/features/event-map.tsx:67:1
+Parsing ecmascript source code failed
+  65 |         if (!token) {
+  66 |           console.error("Mapbox token is missing. Set NEXT_PUBLIC_MAPBOX_TOKEN in your .env")
+> 67 | >>>>>>> Stashed changes
+     | ^^^^^^^
+  68 |           return
+  69 |         }
+  70 |         mapboxgl.accessToken = token
+
+Merge conflict marker encountered.
+
+Import traces:
+  Client Component Browser:
+    ./components/features/event-map.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/event-map.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
+
+
+
+./components/features/event-map.tsx:167:1
+Parsing ecmascript source code failed
+  165 |
+  166 |   return (
+> 167 | <<<<<<< Updated upstream
+      | ^^^^^^^
+  168 |     <div className="relative" style={{ height }}>
+  169 |       {isLoading && (
+  170 |         <div className="absolute inset-0 flex items-center justify-center bg-muted rounded-lg z-10">
+
+Merge conflict marker encountered.
+
+Import traces:
+  Client Component Browser:
+    ./components/features/event-map.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/event-map.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
+
+
+
+./components/features/event-map.tsx:180:1
+Parsing ecmascript source code failed
+  178 |       />
+  179 |     </div>
+> 180 | =======
+      | ^^^^^^^
+  181 |     <div
+  182 |       ref={mapContainerRef}
+  183 |       className={`w-full rounded-lg overflow-hidden ${className}`}
+
+Merge conflict marker encountered.
+
+Import traces:
+  Client Component Browser:
+    ./components/features/event-map.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/event-map.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
+
+
+[00:00:21.057] Browser ERROR   ./components/features/event-map.tsx:127:6
+Parsing ecmascript source code failed
+  125 |       }
+  126 |     }
+> 127 |   }, [latitude, longitude, address, eventName, zoom, interactive, isValidLocation])
+      |      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  128 |
+  129 |   if (!isValidLocation) {
+  130 |     return (
+
+'const' declarations must be initialized
+
+Import traces:
+  Client Component Browser:
+    ./components/features/event-map.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/event-map.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
+[00:00:21.057] Browser ERROR   ./components/features/event-map.tsx:127:83
+Parsing ecmascript source code failed
+  125 |       }
+  126 |     }
+> 127 |   }, [latitude, longitude, address, eventName, zoom, interactive, isValidLocation])
+      |                                                                                   ^
+  128 |
+  129 |   if (!isValidLocation) {
+  130 |     return (
+
+Expected a semicolon
+
+Import traces:
+  Client Component Browser:
+    ./components/features/event-map.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/event-map.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
+[00:00:21.057] Browser ERROR   ./components/features/event-map.tsx:180:1
+Parsing ecmascript source code failed
+  178 |       />
+  179 |     </div>
+> 180 | =======
+      | ^^^^^^^
+  181 |     <div
+  182 |       ref={mapContainerRef}
+  183 |       className={`w-full rounded-lg overflow-hidden ${className}`}
+
+Merge conflict marker encountered.
+
+Import traces:
+  Client Component Browser:
+    ./components/features/event-map.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/event-map.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
+[00:00:22.516] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:00:22.516] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/ color: rgb(120, 120, 120) color: inherit {"o":"http://localhost:3000/","r":"","sdkn":"@vercel/analytics/react","sdkv":"1.5.0","sv":"0.1.3","ts":1764327916588}
+[00:00:22.516] Browser ERROR   ./components/features/event-map.tsx:127:6
+Parsing ecmascript source code failed
+  125 |       }
+  126 |     }
+> 127 |   }, [latitude, longitude, address, eventName, zoom, interactive, isValidLocation])
+      |      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  128 |
+  129 |   if (!isValidLocation) {
+  130 |     return (
+
+'const' declarations must be initialized
+
+Import traces:
+  Client Component Browser:
+    ./components/features/event-map.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/event-map.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
+[00:00:22.517] Browser ERROR   ./components/features/event-map.tsx:127:83
+Parsing ecmascript source code failed
+  125 |       }
+  126 |     }
+> 127 |   }, [latitude, longitude, address, eventName, zoom, interactive, isValidLocation])
+      |                                                                                   ^
+  128 |
+  129 |   if (!isValidLocation) {
+  130 |     return (
+
+Expected a semicolon
+
+Import traces:
+  Client Component Browser:
+    ./components/features/event-map.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/event-map.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
+[00:00:22.517] Browser ERROR   ./components/features/event-map.tsx:180:1
+Parsing ecmascript source code failed
+  178 |       />
+  179 |     </div>
+> 180 | =======
+      | ^^^^^^^
+  181 |     <div
+  182 |       ref={mapContainerRef}
+  183 |       className={`w-full rounded-lg overflow-hidden ${className}`}
+
+Merge conflict marker encountered.
+
+Import traces:
+  Client Component Browser:
+    ./components/features/event-map.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/event-map.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
+[00:00:22.517] Browser ERROR   ./components/features/event-map.tsx:127:6
+Parsing ecmascript source code failed
+  125 |       }
+  126 |     }
+> 127 |   }, [latitude, longitude, address, eventName, zoom, interactive, isValidLocation])
+      |      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  128 |
+  129 |   if (!isValidLocation) {
+  130 |     return (
+
+'const' declarations must be initialized
+
+Import traces:
+  Client Component Browser:
+    ./components/features/event-map.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/event-map.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
+[00:00:22.517] Browser ERROR   ./components/features/event-map.tsx:127:83
+Parsing ecmascript source code failed
+  125 |       }
+  126 |     }
+> 127 |   }, [latitude, longitude, address, eventName, zoom, interactive, isValidLocation])
+      |                                                                                   ^
+  128 |
+  129 |   if (!isValidLocation) {
+  130 |     return (
+
+Expected a semicolon
+
+Import traces:
+  Client Component Browser:
+    ./components/features/event-map.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/event-map.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
+[00:00:22.517] Browser ERROR   ./components/features/event-map.tsx:180:1
+Parsing ecmascript source code failed
+  178 |       />
+  179 |     </div>
+> 180 | =======
+      | ^^^^^^^
+  181 |     <div
+  182 |       ref={mapContainerRef}
+  183 |       className={`w-full rounded-lg overflow-hidden ${className}`}
+
+Merge conflict marker encountered.
+
+Import traces:
+  Client Component Browser:
+    ./components/features/event-map.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/event-map.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
+[00:00:23.049] Browser ERROR   ./components/features/event-map.tsx:127:6
+Parsing ecmascript source code failed
+  125 |       }
+  126 |     }
+> 127 |   }, [latitude, longitude, address, eventName, zoom, interactive, isValidLocation])
+      |      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  128 |
+  129 |   if (!isValidLocation) {
+  130 |     return (
+
+'const' declarations must be initialized
+
+Import traces:
+  Client Component Browser:
+    ./components/features/event-map.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/event-map.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
+[00:00:23.050] Browser ERROR   ./components/features/event-map.tsx:127:83
+Parsing ecmascript source code failed
+  125 |       }
+  126 |     }
+> 127 |   }, [latitude, longitude, address, eventName, zoom, interactive, isValidLocation])
+      |                                                                                   ^
+  128 |
+  129 |   if (!isValidLocation) {
+  130 |     return (
+
+Expected a semicolon
+
+Import traces:
+  Client Component Browser:
+    ./components/features/event-map.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/event-map.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
+[00:00:23.050] Browser ERROR   ./components/features/event-map.tsx:180:1
+Parsing ecmascript source code failed
+  178 |       />
+  179 |     </div>
+> 180 | =======
+      | ^^^^^^^
+  181 |     <div
+  182 |       ref={mapContainerRef}
+  183 |       className={`w-full rounded-lg overflow-hidden ${className}`}
+
+Merge conflict marker encountered.
+
+Import traces:
+  Client Component Browser:
+    ./components/features/event-map.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/event-map.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
+[00:00:24.486] Browser ERROR   uncaughtError: Error: ./components/features/event-map.tsx:127:6
+Parsing ecmascript source code failed
+  125 |       }
+  126 |     }
+> 127 |   }, [latitude, longitude, address, eventName, zoom, interactive, isValidLocation])
+      |      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  128 |
+  129 |   if (!isValidLocation) {
+  130 |     return (
+
+'const' declarations must be initialized
+
+Import traces:
+  Client Component Browser:
+    ./components/features/event-map.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/event-map.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
+
+
+[00:00:24.637] Browser ERROR   ./components/features/event-map.tsx:127:6
+Parsing ecmascript source code failed
+  125 |       }
+  126 |     }
+> 127 |   }, [latitude, longitude, address, eventName, zoom, interactive, isValidLocation])
+      |      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  128 |
+  129 |   if (!isValidLocation) {
+  130 |     return (
+
+'const' declarations must be initialized
+
+Import traces:
+  Client Component Browser:
+    ./components/features/event-map.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/event-map.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
+[00:00:24.637] Browser ERROR   ./components/features/event-map.tsx:127:83
+Parsing ecmascript source code failed
+  125 |       }
+  126 |     }
+> 127 |   }, [latitude, longitude, address, eventName, zoom, interactive, isValidLocation])
+      |                                                                                   ^
+  128 |
+  129 |   if (!isValidLocation) {
+  130 |     return (
+
+Expected a semicolon
+
+Import traces:
+  Client Component Browser:
+    ./components/features/event-map.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/event-map.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
+[00:00:24.637] Browser ERROR   ./components/features/event-map.tsx:180:1
+Parsing ecmascript source code failed
+  178 |       />
+  179 |     </div>
+> 180 | =======
+      | ^^^^^^^
+  181 |     <div
+  182 |       ref={mapContainerRef}
+  183 |       className={`w-full rounded-lg overflow-hidden ${className}`}
+
+Merge conflict marker encountered.
+
+Import traces:
+  Client Component Browser:
+    ./components/features/event-map.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/event-map.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
+[00:00:24.925] Browser ERROR   ./components/features/event-map.tsx:127:6
+Parsing ecmascript source code failed
+  125 |       }
+  126 |     }
+> 127 |   }, [latitude, longitude, address, eventName, zoom, interactive, isValidLocation])
+      |      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  128 |
+  129 |   if (!isValidLocation) {
+  130 |     return (
+
+'const' declarations must be initialized
+
+Import traces:
+  Client Component Browser:
+    ./components/features/event-map.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/event-map.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
+[00:00:24.925] Browser ERROR   ./components/features/event-map.tsx:127:83
+Parsing ecmascript source code failed
+  125 |       }
+  126 |     }
+> 127 |   }, [latitude, longitude, address, eventName, zoom, interactive, isValidLocation])
+      |                                                                                   ^
+  128 |
+  129 |   if (!isValidLocation) {
+  130 |     return (
+
+Expected a semicolon
+
+Import traces:
+  Client Component Browser:
+    ./components/features/event-map.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/event-map.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
+[00:00:24.925] Browser ERROR   ./components/features/event-map.tsx:180:1
+Parsing ecmascript source code failed
+  178 |       />
+  179 |     </div>
+> 180 | =======
+      | ^^^^^^^
+  181 |     <div
+  182 |       ref={mapContainerRef}
+  183 |       className={`w-full rounded-lg overflow-hidden ${className}`}
+
+Merge conflict marker encountered.
+
+Import traces:
+  Client Component Browser:
+    ./components/features/event-map.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/event-map.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
+[00:00:25.058] Browser ERROR   ./components/features/event-map.tsx:127:6
+Parsing ecmascript source code failed
+  125 |       }
+  126 |     }
+> 127 |   }, [latitude, longitude, address, eventName, zoom, interactive, isValidLocation])
+      |      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  128 |
+  129 |   if (!isValidLocation) {
+  130 |     return (
+
+'const' declarations must be initialized
+
+Import traces:
+  Client Component Browser:
+    ./components/features/event-map.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/event-map.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
+[00:00:25.058] Browser ERROR   ./components/features/event-map.tsx:127:83
+Parsing ecmascript source code failed
+  125 |       }
+  126 |     }
+> 127 |   }, [latitude, longitude, address, eventName, zoom, interactive, isValidLocation])
+      |                                                                                   ^
+  128 |
+  129 |   if (!isValidLocation) {
+  130 |     return (
+
+Expected a semicolon
+
+Import traces:
+  Client Component Browser:
+    ./components/features/event-map.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/event-map.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
+[00:00:25.058] Browser ERROR   ./components/features/event-map.tsx:180:1
+Parsing ecmascript source code failed
+  178 |       />
+  179 |     </div>
+> 180 | =======
+      | ^^^^^^^
+  181 |     <div
+  182 |       ref={mapContainerRef}
+  183 |       className={`w-full rounded-lg overflow-hidden ${className}`}
+
+Merge conflict marker encountered.
+
+Import traces:
+  Client Component Browser:
+    ./components/features/event-map.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/event-map.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
+[00:01:15.650] Server  ERROR    ⨯ ./components/features/index.ts:4:1
+Module not found: Can't resolve './event-map'
+  2 | export { QRCodeScanner } from "./qr-code-scanner"
+  3 | export { LocationPicker } from "./location-picker"
+> 4 | export { EventMap } from "./event-map"
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./components/features/index.ts [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/index.ts [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:01:15.652] Server  ERROR    ⨯ ./components/features/index.ts:4:1
+Module not found: Can't resolve './event-map'
+  2 | export { QRCodeScanner } from "./qr-code-scanner"
+  3 | export { LocationPicker } from "./location-picker"
+> 4 | export { EventMap } from "./event-map"
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./components/features/index.ts [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/index.ts [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:01:15.653] Server  ERROR    ⨯ ./components/features/index.ts:4:1
+Module not found: Can't resolve './event-map'
+  2 | export { QRCodeScanner } from "./qr-code-scanner"
+  3 | export { LocationPicker } from "./location-picker"
+> 4 | export { EventMap } from "./event-map"
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./components/features/index.ts [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/index.ts [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:01:15.655] Server  ERROR    ⨯ ./components/features/index.ts:4:1
+Module not found: Can't resolve './event-map'
+  2 | export { QRCodeScanner } from "./qr-code-scanner"
+  3 | export { LocationPicker } from "./location-picker"
+> 4 | export { EventMap } from "./event-map"
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 |
+
+
+
+Import traces:
+  Client Component Browser:
+    ./components/features/index.ts [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/index.ts [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:01:15.789] Browser ERROR   ./components/features/index.ts:4:1
+Module not found: Can't resolve './event-map'
+  2 | export { QRCodeScanner } from "./qr-code-scanner"
+  3 | export { LocationPicker } from "./location-picker"
+> 4 | export { EventMap } from "./event-map"
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 |
+
+Import traces:
+  Client Component Browser:
+    ./components/features/index.ts [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/index.ts [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:01:16.056] Browser ERROR   ./components/features/index.ts:4:1
+Module not found: Can't resolve './event-map'
+  2 | export { QRCodeScanner } from "./qr-code-scanner"
+  3 | export { LocationPicker } from "./location-picker"
+> 4 | export { EventMap } from "./event-map"
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  5 |
+
+Import traces:
+  Client Component Browser:
+    ./components/features/index.ts [Client Component Browser]
+    ./app/events/[code]/page.tsx [Client Component Browser]
+    ./app/events/[code]/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./components/features/index.ts [Client Component SSR]
+    ./app/events/[code]/page.tsx [Client Component SSR]
+    ./app/events/[code]/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:01:33.217] Server  LOG      ✓ Compiled in 139ms
+[00:01:36.063] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:01:36.063] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/events/DQG5KJ color: rgb(120, 120, 120) color: inherit {"o":"http://localhost:3000/events/DQG5KJ","sdkn":"@vercel/analytics/react","sdkv":"1.5.0","sv":"0.1.3","ts":1764327991486}
+[00:01:55.792] Browser LOG     %c[Vercel Web Analytics]%c Debug mode is enabled by default in development. No requests will be sent to the server. color: rgb(120, 120, 120) color: inherit
+[00:01:55.792] Browser LOG     %c[Vercel Web Analytics]%c [pageview] http://localhost:3000/events/DQG5KJ color: rgb(120, 120, 120) color: inherit {"o":"http://localhost:3000/events/DQG5KJ","sdkn":"@vercel/analytics/react","sdkv":"1.5.0","sv":"0.1.3","ts":1764328011183}
+[00:03:43.670] Server  LOG      ○ Compiling /_not-found/page ...
