@@ -11,6 +11,7 @@ export const eventKeys = {
   list: (userId?: string) => [...eventKeys.lists(), userId] as const,
   details: () => [...eventKeys.all, "detail"] as const,
   detail: (idOrCode: string) => [...eventKeys.details(), idOrCode] as const,
+  documents: (eventCode: string) => [...eventKeys.all, "documents", eventCode] as const,
 };
 
 // Get all events
@@ -107,6 +108,29 @@ export function useUpdatePOIs() {
       eventsApi.updatePOIs(eventCode, pois),
     onSuccess: (_: unknown, { eventCode }: { eventCode: string; pois: POI[] }) => {
       queryClient.invalidateQueries({ queryKey: eventKeys.detail(eventCode) });
+    },
+  });
+}
+
+// Get documents with processing status
+export function useDocuments(eventCode: string) {
+  return useQuery({
+    queryKey: eventKeys.documents(eventCode),
+    queryFn: () => eventsApi.getDocuments(eventCode),
+    enabled: !!eventCode && eventCode !== "undefined",
+    refetchInterval: 5000, // Poll every 5 seconds to check processing status
+  });
+}
+
+// Delete document
+export function useDeleteDocument() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ eventCode, docId }: { eventCode: string; docId: string }) =>
+      eventsApi.deleteDocument(eventCode, docId),
+    onSuccess: (_: unknown, { eventCode }: { eventCode: string; docId: string }) => {
+      queryClient.invalidateQueries({ queryKey: eventKeys.documents(eventCode) });
     },
   });
 }

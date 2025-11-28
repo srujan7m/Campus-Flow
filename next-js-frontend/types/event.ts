@@ -51,7 +51,11 @@ export interface Registration {
   eventCode?: string;
   name: string;
   email: string;
+<<<<<<< Updated upstream
   phone?: string;
+=======
+  phone: string;
+>>>>>>> Stashed changes
   paymentStatus: "pending" | "completed" | "failed" | "paid";
   paymentId?: string;
   orderId?: string;
@@ -82,14 +86,22 @@ export interface Ticket {
   id: string;
   eventId: string;
   eventCode: string;
-  question: string;
+  question?: string;
+  message?: string;
   autoAnswer?: string;
   answer?: string;
+  organizerReply?: string;
   status: "open" | "answered" | "closed" | "flagged";
+  shouldFlag?: boolean;
+  confidence?: number;
+  category?: string;
   createdAt?: string;
   updatedAt?: string;
+  answeredAt?: string;
   telegramChatId?: string;
   telegramMessageId?: number;
+  userId?: string;
+  chatId?: string;
 }
 
 export interface TicketReplyData {

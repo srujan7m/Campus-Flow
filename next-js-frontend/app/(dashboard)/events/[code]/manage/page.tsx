@@ -1,8 +1,8 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useParams, useRouter } from "next/navigation"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion } from "framer-motion"
 import {
   ArrowLeft,
   Calendar,
@@ -15,20 +15,23 @@ import {
   Upload,
   Send,
   Flag,
-  Check,
   X,
   ExternalLink,
   Loader2,
   Copy,
   Image as ImageIcon,
   Trash2,
+  Database,
+  Bot,
+  CheckCircle2,
+  Clock,
+  AlertCircle,
 } from "lucide-react"
 import { DashboardLayout } from "@/components/layouts/dashboard-layout"
 import { PageHeader } from "@/components/core/page-header"
 import { EmptyState } from "@/components/core/empty-state"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Label } from "@/components/ui/label"
@@ -42,7 +45,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { EventMap, QRCodeGenerator, QRCodeScanner } from "@/components/features"
-import { useEvent, useUploadDocument, useUploadIndoorMap, useDeleteEvent } from "@/hooks/use-events"
+import { useEvent, useUploadDocument, useUploadIndoorMap, useDeleteEvent, useDocuments, useDeleteDocument } from "@/hooks/use-events"
 import { useTickets, useReplyToTicket, useUpdateTicketStatus } from "@/hooks/use-tickets"
 import { useRegistrations } from "@/hooks/use-registrations"
 import { useSendPoll } from "@/hooks/use-webhooks"
@@ -58,9 +61,11 @@ export default function EventManagePage() {
   const { data: event, isLoading: eventLoading } = useEvent(eventCode)
   const { data: tickets, isLoading: ticketsLoading } = useTickets(eventCode)
   const { data: registrations, isLoading: registrationsLoading } = useRegistrations(eventCode)
+  const { data: documentsData, isLoading: documentsLoading } = useDocuments(eventCode)
 
   const uploadDocument = useUploadDocument()
   const uploadIndoorMap = useUploadIndoorMap()
+  const deleteDocument = useDeleteDocument()
   const replyToTicket = useReplyToTicket()
   const updateTicketStatus = useUpdateTicketStatus()
   const sendPoll = useSendPoll()
@@ -89,8 +94,9 @@ export default function EventManagePage() {
       await deleteEvent.mutateAsync(event.id)
       toast.success("Event deleted successfully")
       router.push("/events")
-    } catch (error: any) {
-      toast.error(error.message || "Failed to delete event")
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : "Failed to delete event"
+      toast.error(errorMessage)
       setIsDeleting(false)
     }
   }
@@ -101,7 +107,7 @@ export default function EventManagePage() {
 
     try {
       await uploadDocument.mutateAsync({ eventCode, file })
-      toast.success("Document uploaded successfully!")
+      toast.success("Document uploaded! Processing will begin shortly.")
     } catch {
       toast.error("Failed to upload document")
     }
@@ -116,6 +122,19 @@ export default function EventManagePage() {
       toast.success("Indoor map uploaded successfully!")
     } catch {
       toast.error("Failed to upload indoor map")
+    }
+  }
+
+  const handleDocumentDelete = async (docId: string, filename: string) => {
+    if (!confirm(`Delete "${filename}"? This will remove the document and all its indexed content from the AI knowledge base.`)) {
+      return
+    }
+
+    try {
+      await deleteDocument.mutateAsync({ eventCode, docId })
+      toast.success("Document deleted successfully")
+    } catch {
+      toast.error("Failed to delete document")
     }
   }
 
@@ -268,7 +287,7 @@ export default function EventManagePage() {
                         {(() => {
                           try {
                             return format(new Date(event.date), "PPP 'at' p")
-                          } catch (e) {
+                          } catch {
                             return "Invalid Date"
                           }
                         })()}
@@ -304,16 +323,6 @@ export default function EventManagePage() {
                     <Label className="text-muted-foreground">Address</Label>
                     <p className="text-sm">{event.address}</p>
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label className="text-muted-foreground">Latitude</Label>
-                      <p className="text-sm font-mono">{event.lat}</p>
-                    </div>
-                    <div className="space-y-2">
-                      <Label className="text-muted-foreground">Longitude</Label>
-                      <p className="text-sm font-mono">{event.lng}</p>
-                    </div>
-                  </div>
                   {event.telegramChatId && (
                     <div className="space-y-2">
                       <Label className="text-muted-foreground flex items-center gap-2">
@@ -328,98 +337,287 @@ export default function EventManagePage() {
             </motion.div>
           </TabsContent>
 
-          {/* Documents Tab */}
+          {/* Documents Tab - Enhanced with RAG Status */}
           <TabsContent value="documents" className="mt-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="grid gap-6 md:grid-cols-2"
+              className="space-y-6"
             >
-              <Card>
+              {/* RAG Status Overview */}
+              <Card className="border-primary/20 bg-primary/5">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <FileText className="h-5 w-5" />
-                    Upload Document
+                    <Bot className="h-5 w-5" />
+                    AI Knowledge Base Status
                   </CardTitle>
                   <CardDescription>
-                    Upload PDF, DOCX, or TXT files for the AI to answer questions from
+                    Documents uploaded here are processed, chunked, and indexed with Gemini embeddings for the Telegram bot to answer attendee questions.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center">
-                    <Upload className="h-10 w-10 mx-auto text-muted-foreground mb-4" />
-                    <Label
-                      htmlFor="document-upload"
-                      className="cursor-pointer text-primary hover:underline"
-                    >
-                      Click to upload or drag and drop
-                    </Label>
-                    <Input
-                      id="document-upload"
-                      type="file"
-                      accept=".pdf,.docx,.txt"
-                      className="hidden"
-                      onChange={handleDocumentUpload}
-                      disabled={uploadDocument.isPending}
-                    />
-                    <p className="text-xs text-muted-foreground mt-2">
-                      PDF, DOCX, or TXT up to 10MB
-                    </p>
-                    {uploadDocument.isPending && (
-                      <div className="mt-4 flex items-center justify-center gap-2 text-sm text-muted-foreground">
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                        Uploading...
+                  {documentsLoading ? (
+                    <div className="flex items-center justify-center py-4">
+                      <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                    </div>
+                  ) : documentsData?.stats ? (
+                    <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                      <div className="bg-background rounded-lg p-4 text-center">
+                        <div className="text-2xl font-bold">{documentsData.stats.totalDocuments}</div>
+                        <div className="text-xs text-muted-foreground">Total Documents</div>
                       </div>
-                    )}
+                      <div className="bg-background rounded-lg p-4 text-center">
+                        <div className="text-2xl font-bold text-green-600">{documentsData.stats.indexedDocuments}</div>
+                        <div className="text-xs text-muted-foreground">Indexed</div>
+                      </div>
+                      <div className="bg-background rounded-lg p-4 text-center">
+                        <div className="text-2xl font-bold text-yellow-600">{documentsData.stats.processingDocuments}</div>
+                        <div className="text-xs text-muted-foreground">Processing</div>
+                      </div>
+                      <div className="bg-background rounded-lg p-4 text-center">
+                        <div className="text-2xl font-bold">{documentsData.stats.totalChunks}</div>
+                        <div className="text-xs text-muted-foreground">Text Chunks</div>
+                      </div>
+                      <div className="bg-background rounded-lg p-4 text-center">
+                        <Badge variant={documentsData.stats.ragEnabled ? "default" : "secondary"} className="text-sm">
+                          {documentsData.stats.ragEnabled ? (
+                            <><CheckCircle2 className="h-3 w-3 mr-1" /> RAG Active</>
+                          ) : (
+                            <><AlertCircle className="h-3 w-3 mr-1" /> No Data</>
+                          )}
+                        </Badge>
+                        <div className="text-xs text-muted-foreground mt-1">Bot Status</div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="text-center text-muted-foreground py-4">
+                      No documents uploaded yet. Upload documents to enable AI-powered Q&A.
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* How It Works */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Database className="h-5 w-5" />
+                    How Document Indexing Works
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid md:grid-cols-4 gap-4 text-sm">
+                    <div className="flex flex-col items-center text-center p-4 bg-muted/50 rounded-lg">
+                      <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center mb-2">
+                        <Upload className="h-5 w-5 text-primary" />
+                      </div>
+                      <div className="font-medium">1. Upload</div>
+                      <div className="text-muted-foreground text-xs">Upload PDF, DOCX, or TXT files</div>
+                    </div>
+                    <div className="flex flex-col items-center text-center p-4 bg-muted/50 rounded-lg">
+                      <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center mb-2">
+                        <FileText className="h-5 w-5 text-primary" />
+                      </div>
+                      <div className="font-medium">2. Parse & Chunk</div>
+                      <div className="text-muted-foreground text-xs">Text extracted and split into chunks (~400 tokens each)</div>
+                    </div>
+                    <div className="flex flex-col items-center text-center p-4 bg-muted/50 rounded-lg">
+                      <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center mb-2">
+                        <Database className="h-5 w-5 text-primary" />
+                      </div>
+                      <div className="font-medium">3. Embed & Store</div>
+                      <div className="text-muted-foreground text-xs">Gemini generates 768-dim embeddings, stored in Firestore</div>
+                    </div>
+                    <div className="flex flex-col items-center text-center p-4 bg-muted/50 rounded-lg">
+                      <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center mb-2">
+                        <Bot className="h-5 w-5 text-primary" />
+                      </div>
+                      <div className="font-medium">4. RAG Query</div>
+                      <div className="text-muted-foreground text-xs">Bot retrieves relevant chunks via cosine similarity</div>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
 
+              <div className="grid gap-6 md:grid-cols-2">
+                {/* Upload Document */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <FileText className="h-5 w-5" />
+                      Upload Document
+                    </CardTitle>
+                    <CardDescription>
+                      Upload PDF, DOCX, or TXT files for the AI to answer questions from
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center">
+                      <Upload className="h-10 w-10 mx-auto text-muted-foreground mb-4" />
+                      <Label
+                        htmlFor="document-upload"
+                        className="cursor-pointer text-primary hover:underline"
+                      >
+                        Click to upload or drag and drop
+                      </Label>
+                      <Input
+                        id="document-upload"
+                        type="file"
+                        accept=".pdf,.docx,.txt"
+                        className="hidden"
+                        onChange={handleDocumentUpload}
+                        disabled={uploadDocument.isPending}
+                      />
+                      <p className="text-xs text-muted-foreground mt-2">
+                        PDF, DOCX, or TXT up to 10MB
+                      </p>
+                      {uploadDocument.isPending && (
+                        <div className="mt-4 flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                          Uploading...
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Upload Indoor Map */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <ImageIcon className="h-5 w-5" />
+                      Indoor Map
+                    </CardTitle>
+                    <CardDescription>
+                      Upload a floor plan image for attendee navigation
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center">
+                      <ImageIcon className="h-10 w-10 mx-auto text-muted-foreground mb-4" />
+                      <Label
+                        htmlFor="map-upload"
+                        className="cursor-pointer text-primary hover:underline"
+                      >
+                        Click to upload or drag and drop
+                      </Label>
+                      <Input
+                        id="map-upload"
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={handleIndoorMapUpload}
+                        disabled={uploadIndoorMap.isPending}
+                      />
+                      <p className="text-xs text-muted-foreground mt-2">
+                        PNG, JPG, or WebP up to 5MB
+                      </p>
+                      {uploadIndoorMap.isPending && (
+                        <div className="mt-4 flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                          Uploading...
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Uploaded Documents List */}
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <ImageIcon className="h-5 w-5" />
-                    Indoor Map
+                    <FileText className="h-5 w-5" />
+                    Uploaded Documents
                   </CardTitle>
                   <CardDescription>
-                    Upload a floor plan image for attendee navigation
+                    Documents indexed for the AI knowledge base
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center">
-                    <ImageIcon className="h-10 w-10 mx-auto text-muted-foreground mb-4" />
-                    <Label
-                      htmlFor="map-upload"
-                      className="cursor-pointer text-primary hover:underline"
-                    >
-                      Click to upload or drag and drop
-                    </Label>
-                    <Input
-                      id="map-upload"
-                      type="file"
-                      accept="image/*"
-                      className="hidden"
-                      onChange={handleIndoorMapUpload}
-                      disabled={uploadIndoorMap.isPending}
-                    />
-                    <p className="text-xs text-muted-foreground mt-2">
-                      PNG, JPG, or WebP up to 5MB
-                    </p>
-                    {uploadIndoorMap.isPending && (
-                      <div className="mt-4 flex items-center justify-center gap-2 text-sm text-muted-foreground">
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                        Uploading...
-                      </div>
-                    )}
-                  </div>
-                  {event.indoorMap?.url && (
-                    <div className="mt-4">
-                      <img
-                        src={event.indoorMap.url}
-                        alt="Indoor Map"
-                        className="rounded-lg border w-full"
-                      />
+                  {documentsLoading ? (
+                    <div className="flex items-center justify-center py-8">
+                      <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
                     </div>
+                  ) : documentsData?.documents && documentsData.documents.length > 0 ? (
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Filename</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead>Chunks</TableHead>
+                          <TableHead>Uploaded</TableHead>
+                          <TableHead>Indexed</TableHead>
+                          <TableHead className="text-right">Actions</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {documentsData.documents.map((doc) => (
+                          <TableRow key={doc.id}>
+                            <TableCell className="font-medium">
+                              <div className="flex items-center gap-2">
+                                <FileText className="h-4 w-4 text-muted-foreground" />
+                                {doc.filename}
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              {doc.status === 'indexed' ? (
+                                <Badge variant="default" className="bg-green-600">
+                                  <CheckCircle2 className="h-3 w-3 mr-1" />
+                                  Indexed
+                                </Badge>
+                              ) : (
+                                <Badge variant="secondary">
+                                  <Clock className="h-3 w-3 mr-1 animate-spin" />
+                                  Processing
+                                </Badge>
+                              )}
+                            </TableCell>
+                            <TableCell>
+                              <span className="font-mono text-sm">{doc.chunkCount}</span>
+                            </TableCell>
+                            <TableCell>
+                              {doc.uploadedAt ? format(new Date(doc.uploadedAt), "PP") : "N/A"}
+                            </TableCell>
+                            <TableCell>
+                              {doc.processedAt ? format(new Date(doc.processedAt), "PP p") : "-"}
+                            </TableCell>
+                            <TableCell className="text-right">
+                              <div className="flex items-center justify-end gap-2">
+                                {doc.storageUrl && (
+                                  <Button
+                                    size="icon"
+                                    variant="ghost"
+                                    onClick={() => window.open(doc.storageUrl, "_blank")}
+                                  >
+                                    <ExternalLink className="h-4 w-4" />
+                                  </Button>
+                                )}
+                                <Button
+                                  size="icon"
+                                  variant="ghost"
+                                  className="text-destructive hover:text-destructive"
+                                  onClick={() => handleDocumentDelete(doc.id, doc.filename)}
+                                  disabled={deleteDocument.isPending}
+                                >
+                                  {deleteDocument.isPending ? (
+                                    <Loader2 className="h-4 w-4 animate-spin" />
+                                  ) : (
+                                    <Trash2 className="h-4 w-4" />
+                                  )}
+                                </Button>
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  ) : (
+                    <EmptyState
+                      icon={FileText}
+                      title="No documents uploaded"
+                      description="Upload documents to enable AI-powered Q&A for your attendees via the Telegram bot"
+                    />
                   )}
                 </CardContent>
               </Card>
@@ -436,7 +634,7 @@ export default function EventManagePage() {
                     Support Tickets
                   </CardTitle>
                   <CardDescription>
-                    Manage questions from attendees via Telegram
+                    Manage questions from attendees via Telegram. The AI auto-answers questions using your uploaded documents.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -453,35 +651,43 @@ export default function EventManagePage() {
                         >
                           <div className="flex items-start justify-between">
                             <div className="space-y-1">
-                              <p className="font-medium">{ticket.question}</p>
+                              <p className="font-medium">{ticket.message || ticket.question}</p>
                               {ticket.autoAnswer && (
                                 <div className="bg-muted rounded-md p-3 mt-2">
-                                  <p className="text-xs text-muted-foreground mb-1">
-                                    AI Auto-Answer:
+                                  <p className="text-xs text-muted-foreground mb-1 flex items-center gap-1">
+                                    <Bot className="h-3 w-3" /> AI Auto-Answer:
                                   </p>
                                   <p className="text-sm">{ticket.autoAnswer}</p>
                                 </div>
                               )}
                             </div>
-                            <Badge
-                              variant={
-                                ticket.status === "answered"
-                                  ? "default"
-                                  : ticket.status === "flagged"
-                                    ? "destructive"
-                                    : "secondary"
-                              }
-                            >
-                              {ticket.status}
-                            </Badge>
+                            <div className="flex items-center gap-2">
+                              {ticket.shouldFlag && (
+                                <Badge variant="destructive">
+                                  <Flag className="h-3 w-3 mr-1" />
+                                  Flagged
+                                </Badge>
+                              )}
+                              <Badge
+                                variant={
+                                  ticket.status === "answered"
+                                    ? "default"
+                                    : ticket.status === "closed"
+                                      ? "secondary"
+                                      : "outline"
+                                }
+                              >
+                                {ticket.status}
+                              </Badge>
+                            </div>
                           </div>
 
-                          {ticket.answer && (
+                          {ticket.organizerReply && (
                             <div className="bg-primary/5 rounded-md p-3">
                               <p className="text-xs text-muted-foreground mb-1">
                                 Your Reply:
                               </p>
-                              <p className="text-sm">{ticket.answer}</p>
+                              <p className="text-sm">{ticket.organizerReply}</p>
                             </div>
                           )}
 
@@ -517,6 +723,15 @@ export default function EventManagePage() {
                               </Button>
                             </div>
                           )}
+
+                          <div className="text-xs text-muted-foreground">
+                            {ticket.createdAt && (
+                              <>Created: {format(new Date(ticket.createdAt), "PPp")}</>
+                            )}
+                            {ticket.confidence && (
+                              <> • Confidence: {Math.round(ticket.confidence * 100)}%</>
+                            )}
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -524,7 +739,7 @@ export default function EventManagePage() {
                     <EmptyState
                       icon={MessageSquare}
                       title="No tickets yet"
-                      description="Support tickets from attendees will appear here"
+                      description="Support tickets from attendees will appear here when they message your Telegram bot"
                     />
                   )}
                 </CardContent>
@@ -584,7 +799,7 @@ export default function EventManagePage() {
                               {(() => {
                                 try {
                                   return reg.createdAt ? format(new Date(reg.createdAt), "PP") : "N/A"
-                                } catch (e) {
+                                } catch {
                                   return "Invalid Date"
                                 }
                               })()}
@@ -619,7 +834,7 @@ export default function EventManagePage() {
                     Send Telegram Poll
                   </CardTitle>
                   <CardDescription>
-                    Create and send a poll to your event's Telegram group
+                    Create and send a poll to your event&apos;s Telegram group
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -726,7 +941,6 @@ export default function EventManagePage() {
                 onScan={(data) => {
                   toast.success(`Scanned: ${data}`)
                   // TODO: Implement check-in logic
-                  // You can add API call here to mark attendee as checked-in
                 }}
                 onError={(error) => {
                   toast.error(error)

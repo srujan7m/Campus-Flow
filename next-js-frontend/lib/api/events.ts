@@ -8,6 +8,29 @@ import {
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api";
 
+// Document type
+export interface EventDocument {
+  id: string;
+  filename: string;
+  storageUrl: string;
+  uploadedAt: string | null;
+  processedAt: string | null;
+  chunkCount: number;
+  status: 'indexed' | 'processing';
+  isIndexed: boolean;
+}
+
+export interface DocumentsResponse {
+  documents: EventDocument[];
+  stats: {
+    totalDocuments: number;
+    indexedDocuments: number;
+    processingDocuments: number;
+    totalChunks: number;
+    ragEnabled: boolean;
+  };
+}
+
 // Events API
 export const eventsApi = {
   // Get all events for a user
@@ -130,5 +153,24 @@ export const eventsApi = {
       throw new Error("Failed to update POIs");
     }
     return response.json();
+  },
+
+  // Get documents with processing status
+  getDocuments: async (eventCode: string): Promise<DocumentsResponse> => {
+    const response = await fetch(`${API_URL}/events/${eventCode}/documents`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch documents");
+    }
+    return response.json();
+  },
+
+  // Delete a document
+  deleteDocument: async (eventCode: string, docId: string): Promise<void> => {
+    const response = await fetch(`${API_URL}/events/${eventCode}/documents/${docId}`, {
+      method: "DELETE",
+    });
+    if (!response.ok) {
+      throw new Error("Failed to delete document");
+    }
   },
 };

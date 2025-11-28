@@ -8,7 +8,7 @@ import {
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api";
 
 export const ticketsApi = {
-  // Get tickets for an event
+  // Get tickets for an event by eventCode
   getTickets: async (eventCode: string): Promise<Ticket[]> => {
     const response = await fetch(`${API_URL}/tickets/${eventCode}`);
     if (!response.ok) {
@@ -28,7 +28,7 @@ export const ticketsApi = {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ answer }),
+      body: JSON.stringify({ replyText: answer }),
     });
     if (!response.ok) {
       throw new Error("Failed to reply to ticket");

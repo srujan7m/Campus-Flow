@@ -6,7 +6,72 @@ const { sendOrganizerReply } = require('../services/telegram');
 const router = express.Router();
 
 /**
- * GET /api/tickets - List tickets (with optional eventId filter)
+ * Helper to resolve eventCode to eventId
+ */
+async function resolveEventId(eventCodeOrId) {
+    const db = admin.firestore();
+    
+    // First try direct doc lookup
+    const eventDoc = await db.collection(COLLECTIONS.EVENTS).doc(eventCodeOrId).get();
+    if (eventDoc.exists) {
+        return eventCodeOrId;
+    }
+    
+    // Try finding by eventCode
+    const snapshot = await db.collection(COLLECTIONS.EVENTS)
+        .where('eventCode', '==', eventCodeOrId.toUpperCase())
+        .limit(1)
+        .get();
+    
+    if (!snapshot.empty) {
+        return snapshot.docs[0].id;
+    }
+    
+    return null;
+}
+
+/**
+ * GET /api/tickets/:eventCode - List tickets for an event by eventCode or eventId
+ */
+router.get('/:eventCode', async (req, res) => {
+    try {
+        const db = admin.firestore();
+        const { status } = req.query;
+
+        // Resolve eventCode to eventId
+        const eventId = await resolveEventId(req.params.eventCode);
+        if (!eventId) {
+            return res.status(404).json({ error: 'Event not found' });
+        }
+
+        let query = db.collection(COLLECTIONS.TICKETS).where('eventId', '==', eventId);
+
+        if (status) {
+            query = query.where('status', '==', status);
+        }
+
+        const snapshot = await query.orderBy('createdAt', 'desc').get();
+
+        const tickets = [];
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            tickets.push({
+                id: doc.id,
+                ...data,
+                createdAt: data.createdAt?.toDate?.() || null,
+                answeredAt: data.answeredAt?.toDate?.() || null
+            });
+        });
+
+        res.json({ tickets });
+    } catch (error) {
+        console.error('Error fetching tickets:', error);
+        res.status(500).json({ error: 'Failed to fetch tickets' });
+    }
+});
+
+/**
+ * GET /api/tickets - List all tickets (with optional filters)
  */
 router.get('/', async (req, res) => {
     try {
@@ -26,7 +91,13 @@ router.get('/', async (req, res) => {
 
         const tickets = [];
         snapshot.forEach(doc => {
-            tickets.push({ id: doc.id, ...doc.data() });
+            const data = doc.data();
+            tickets.push({
+                id: doc.id,
+                ...data,
+                createdAt: data.createdAt?.toDate?.() || null,
+                answeredAt: data.answeredAt?.toDate?.() || null
+            });
         });
 
         res.json({ tickets });
@@ -41,7 +112,12 @@ router.get('/', async (req, res) => {
  */
 router.post('/:id/reply', async (req, res) => {
     try {
-        const { replyText } = req.body;
+        // Support both 'replyText' and 'answer' for backwards compatibility
+        const replyText = req.body.replyText || req.body.answer;
+        
+        if (!replyText) {
+            return res.status(400).json({ error: 'Reply text is required' });
+        }
 
         await sendOrganizerReply(req.params.id, replyText);
 
