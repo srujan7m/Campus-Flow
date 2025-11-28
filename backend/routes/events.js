@@ -321,16 +321,6 @@ async function resolveEventId(eventCodeOrId) {
 /**
  * POST /api/events/:id/documents - Upload and process document
  */
-<<<<<<< Updated upstream
-router.post("/:id/documents", upload.single("file"), async (req, res) => {
-  try {
-    const db = admin.firestore();
-    const eventId = req.params.id;
-    const file = req.file;
-
-    if (!file) {
-      return res.status(400).json({ error: "No file uploaded" });
-=======
 router.post('/:id/documents', upload.single('file'), async (req, res) => {
     try {
         const db = admin.firestore();
@@ -383,68 +373,12 @@ router.post('/:id/documents', upload.single('file'), async (req, res) => {
     } catch (error) {
         console.error('Error uploading document:', error);
         res.status(500).json({ error: 'Failed to upload document' });
->>>>>>> Stashed changes
     }
-
-    // Upload to Firebase Storage
-    const bucket = admin.storage().bucket();
-    const storageFilename = `events/${eventId}/documents/${Date.now()}_${
-      file.originalname
-    }`;
-    const fileRef = bucket.file(storageFilename);
-
-    await fileRef.save(file.buffer, {
-      metadata: {
-        contentType: file.mimetype,
-      },
-    });
-
-    const storageUrl = await fileRef.getSignedUrl({
-      action: "read",
-      expires: "03-01-2500",
-    });
-
-    // Create document record
-    const docRef = await db
-      .collection(COLLECTIONS.EVENTS)
-      .doc(eventId)
-      .collection("documents")
-      .add({
-        filename: file.originalname,
-        storageUrl: storageUrl[0],
-        uploadedAt: admin.firestore.FieldValue.serverTimestamp(),
-        processedAt: null,
-        chunkCount: 0,
-      });
-
-    // Process document asynchronously (in production, use background worker)
-    ingestDocument(eventId, docRef.id, file.buffer, file.originalname).catch(
-      (error) => console.error("Document processing error:", error)
-    );
-
-    res.status(201).json({
-      id: docRef.id,
-      message: "Document uploaded. Processing in background...",
-    });
-  } catch (error) {
-    console.error("Error uploading document:", error);
-    res.status(500).json({ error: "Failed to upload document" });
-  }
 });
 
 /**
  * POST /api/events/:id/indoor-map - Upload indoor map
  */
-<<<<<<< Updated upstream
-router.post("/:id/indoor-map", upload.single("file"), async (req, res) => {
-  try {
-    const db = admin.firestore();
-    const eventId = req.params.id;
-    const file = req.file;
-
-    if (!file) {
-      return res.status(400).json({ error: "No file uploaded" });
-=======
 router.post('/:id/indoor-map', upload.single('file'), async (req, res) => {
     try {
         const db = admin.firestore();
@@ -484,36 +418,7 @@ router.post('/:id/indoor-map', upload.single('file'), async (req, res) => {
     } catch (error) {
         console.error('Error uploading indoor map:', error);
         res.status(500).json({ error: 'Failed to upload indoor map' });
->>>>>>> Stashed changes
     }
-
-    // Upload to Firebase Storage
-    const bucket = admin.storage().bucket();
-    const storageFilename = `events/${eventId}/indoor-maps/${Date.now()}_${
-      file.originalname
-    }`;
-    const fileRef = bucket.file(storageFilename);
-
-    await fileRef.save(file.buffer, {
-      metadata: {
-        contentType: file.mimetype,
-      },
-    });
-
-    await fileRef.makePublic();
-    const publicUrl = `https://storage.googleapis.com/${bucket.name}/${storageFilename}`;
-
-    // Update event with indoor map URL
-    await db.collection(COLLECTIONS.EVENTS).doc(eventId).update({
-      indoorMapUrl: publicUrl,
-      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
-    });
-
-    res.json({ indoorMapUrl: publicUrl });
-  } catch (error) {
-    console.error("Error uploading indoor map:", error);
-    res.status(500).json({ error: "Failed to upload indoor map" });
-  }
 });
 
 /**
@@ -524,23 +429,16 @@ router.put("/:id/pois", async (req, res) => {
     const db = admin.firestore();
     const { pois } = req.body;
 
-<<<<<<< Updated upstream
-    await db.collection(COLLECTIONS.EVENTS).doc(req.params.id).update({
-      indoorMapPOIs: pois,
-      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
-    });
-=======
-        // Resolve eventCode to eventId if necessary
-        const eventId = await resolveEventId(req.params.id);
-        if (!eventId) {
-            return res.status(404).json({ error: 'Event not found' });
-        }
+    // Resolve eventCode to eventId if necessary
+    const eventId = await resolveEventId(req.params.id);
+    if (!eventId) {
+        return res.status(404).json({ error: 'Event not found' });
+    }
 
-        await db.collection(COLLECTIONS.EVENTS).doc(eventId).update({
-            indoorMapPOIs: pois,
-            updatedAt: admin.firestore.FieldValue.serverTimestamp()
-        });
->>>>>>> Stashed changes
+    await db.collection(COLLECTIONS.EVENTS).doc(eventId).update({
+        indoorMapPOIs: pois,
+        updatedAt: admin.firestore.FieldValue.serverTimestamp()
+    });
 
     res.json({ success: true });
   } catch (error) {
